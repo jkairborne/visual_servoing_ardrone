@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>publ_subs</name>
+  <name>visual_servoing_ardrone</name>
   <version>0.0.0</version>
-  <description>The publ_subs package</description>
+  <description>The visual_servoing_ardrone package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->

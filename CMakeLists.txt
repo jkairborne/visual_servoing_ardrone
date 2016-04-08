@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(publ_subs)
+project(visual_servoing_ardrone)
 
 ## Find catkin and any catkin packages
 find_package(catkin REQUIRED COMPONENTS 
