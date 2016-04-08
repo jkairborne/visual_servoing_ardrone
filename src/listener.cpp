@@ -8,7 +8,8 @@
 /**
  * This tutorial demonstrates simple receipt of messages over the ROS system.
  */
-
+ros::Publisher chatterx;
+ros::Subscriber sub;
 
 void chatterCallback(const ar_track_alvar_msgs::AlvarMarkers& msg)
 {
@@ -17,27 +18,23 @@ ROS_INFO("I heard: [%d]", msg.ar_track_alvar_msgs.AlvarMarkers.marker.id);
 
   ROS_INFO("I heard: [%d], %i, and d%cd", msg.header.seq, msg.header.stamp.sec, msg.header.frame_id[0]);
 */
-ROS_INFO("I heard: [%f]", msg.markers[0].pose.pose.orientation.x);
-	
-	ros::NodeHandle nh;
+ROS_INFO("I heard: [%f]", msg.markers[0].pose.pose.position.x);
 
-	ros::Publisher chatterx = nh.advertise<std_msgs::Float64>("pose_x", 1000);
-
+/*
 	ros::Publisher chattery = nh.advertise<std_msgs::Float64>("pose_y", 1000);
 	ros::Publisher chatterz = nh.advertise<std_msgs::Float64>("pose_z", 1000);
-
-
-	ros::Rate loop_rate(10);
-
-    std_msgs::Float64 msgx;
-    std_msgs::Float64 msgy;
-    std_msgs::Float64 msgz;
-
-    msgx.data = msg.markers[0].pose.pose.position.x;
-    msgy.data = msg.markers[0].pose.pose.position.y;
-    msgz.data = msg.markers[0].pose.pose.position.z;
-
-    ROS_INFO("%f", msgx.data);
+*/
+        std_msgs::Float64 msgx;
+/*  
+      std_msgs::Float64 msgy;
+        std_msgs::Float64 msgz;
+ */
+        msgx.data = msg.markers[0].pose.pose.position.x;
+/*   
+     msgy.data = msg.markers[0].pose.pose.position.y;
+        msgz.data = msg.markers[0].pose.pose.position.z;
+*/
+        ROS_INFO("%f", msgx.data);
 
     /**
      * The publish() function is how you send messages. The parameter
@@ -45,12 +42,13 @@ ROS_INFO("I heard: [%f]", msg.markers[0].pose.pose.orientation.x);
      * given as a template parameter to the advertise<>() call, as was done
      * in the constructor above.
      */
-    chatterx.publish(msgx);
-    chattery.publish(msgy);
-    chatterz.publish(msgz);
-    ros::spinOnce();
-
-    loop_rate.sleep();
+       chatterx.publish(msgx);
+/*
+       chattery.publish(msgy);
+       chatterz.publish(msgz);
+  */ 	ros::Rate loop_rate(10);
+	ros::spinOnce();
+	loop_rate.sleep(); 
   }
 
 
@@ -92,7 +90,8 @@ int main(int argc, char **argv)
    * is the number of messages that will be buffered up before beginning to throw
    * away the oldest ones.
    */
-  ros::Subscriber sub = n.subscribe("/ar_pose_marker", 1000, chatterCallback);
+  chatterx = n.advertise<std_msgs::Float64>("/pose_x",1000);
+  sub = n.subscribe("/ar_pose_marker", 1000, chatterCallback);
 
   /**
    * ros::spin() will enter a loop, pumping callbacks.  With this version, all
