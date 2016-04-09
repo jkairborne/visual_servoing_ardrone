@@ -1,6 +1,73 @@
 <launch>
-	<node pkg="rosbag" type="play" name="player" output="screen" args="--clock /home/jason/ROS/src/jardrone/bagfiles/20160406_all2.bag"/>
+	<node pkg="rosbag" type="play" name="player" output="screen" args="--clock /home/jason/ROS/src/jardrone/bagfiles/20160406_all.bag"/>
 	<node pkg="visual_servoing_ardrone" name="listener" type="listener" respawn="true"/>
 	<node pkg="visual_servoing_ardrone" name="quat_to_rpy" type="quat_to_rpy" respawn="true"/>
+
+    <node name="setpoints" pkg="visual_servoing_ardrone" type="setpoints"/>
+
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_x" output="screen" >
+      <param name="node_name" value="ArDrone_pid_x" />
+      <param name="Kp" value="2.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="1.0" />
+      <param name="upper_limit" value="1" />
+      <param name="lower_limit" value="-1" />
+      <param name="windup_limit" value="1" />
+      <param name="diagnostic_period" value="0.25" />
+      <param name="max_loop_frequency" value="115.0" />
+      <param name="min_loop_frequency" value="85.0" />
+      <param name="topic_from_plant" value="/pose_x" />
+      <param name="topic_from_controller" value="vs_output_x" />
+      <remap from="setpoint" to="/spt_xy"/>
+     </node>
+
+
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_y" output="screen" >
+      <param name="node_name" value="ArDrone_pid_y" />
+      <param name="Kp" value="2.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="1.0" />
+      <param name="upper_limit" value="1" />
+      <param name="lower_limit" value="-1" />
+      <param name="windup_limit" value="1" />
+      <param name="diagnostic_period" value="0.25" />
+      <param name="max_loop_frequency" value="115.0" />
+      <param name="min_loop_frequency" value="85.0" />
+      <param name="topic_from_plant" value="/pose_y" />
+      <param name="topic_from_controller" value="vs_output_y" />
+      <remap from="setpoint" to="/spt_xy"/>
+     </node>
+
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_yaw" output="screen" >
+      <param name="node_name" value="ArDrone_pid" />
+      <param name="Kp" value="2.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="1.0" />
+      <param name="upper_limit" value="1" />
+      <param name="lower_limit" value="-1" />
+      <param name="windup_limit" value="1" />
+      <param name="diagnostic_period" value="0.25" />
+      <param name="max_loop_frequency" value="115.0" />
+      <param name="min_loop_frequency" value="85.0" />
+      <param name="topic_from_plant" value="/yaw_angle" />
+      <param name="topic_from_controller" value="vs_output_yaw" />
+      <remap from="setpoint" to="/spt_xy"/>
+     </node>
+
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_z" output="screen" >
+      <param name="node_name" value="ArDrone_pid_z" />
+      <param name="Kp" value="2.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="1.0" />
+      <param name="upper_limit" value="1" />
+      <param name="lower_limit" value="-1" />
+      <param name="windup_limit" value="1" />
+      <param name="diagnostic_period" value="0.25" />
+      <param name="max_loop_frequency" value="115.0" />
+      <param name="min_loop_frequency" value="85.0" />
+      <param name="topic_from_plant" value="/pose_z" />
+      <param name="topic_from_controller" value="vs_output_z" />
+      <remap from="setpoint" to="/spt_z"/>
+     </node>
 
 </launch>
