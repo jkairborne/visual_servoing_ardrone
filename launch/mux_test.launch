@@ -2,6 +2,6 @@
 	<node name="vel_mux" pkg="twist_mux" type="twist_mux">
 		<remap from="twist" to="twist_mux/cmd_vel"/>
 		<rosparam file="$(find visual_servoing_ardrone)/config/twist_mux_topics.yaml" command="load"/>
-<!--		<rosparam file="$(find visual_servoing_ardrone)/config/twist_mux_locks.yaml" command="load"/>  -->
+		<rosparam file="$(find visual_servoing_ardrone)/config/twist_mux_locks.yaml" command="load"/>
 	</node>
 </launch>

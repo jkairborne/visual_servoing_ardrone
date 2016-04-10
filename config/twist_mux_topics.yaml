@@ -7,17 +7,17 @@
 
 topics:
 -
-  name    : navigation
+  name    : navigationtopic
   topic   : talker1
   timeout : 0.5
   priority: 100
 -
-  name    : joystick
+  name    : joysticktopic
   topic   : talker2
   timeout : 0.5
   priority: 50
 -
-  name    : keyboard
+  name    : keyboardtopic
   topic   : talker3
   timeout : 0.5
-  priority: 0
+  priority: 10
