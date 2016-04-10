@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
 	genmsg
 	message_generation
 	tf	
+	message_filters
 )
 
 ## Declare ROS messages and services
@@ -32,11 +33,15 @@ add_executable(talker_multiple src/talker_multiple.cpp)
 add_executable(listen_to_rpy src/listen_to_rpy.cpp)
 add_executable(quat_to_rpy src/quat_to_rpy.cpp)
 add_executable(setpoints src/setpoints.cpp)
+add_executable(filter_empty_msgs src/filter_empty_msgs.cpp)
+add_executable(combine_floats src/combine_floats.cpp)
 target_link_libraries(talker ${catkin_LIBRARIES})
 target_link_libraries(talker_multiple ${catkin_LIBRARIES})
 target_link_libraries(listen_to_rpy ${catkin_LIBRARIES})
 target_link_libraries(quat_to_rpy ${catkin_LIBRARIES})
 target_link_libraries(setpoints ${catkin_LIBRARIES})
+target_link_libraries(filter_empty_msgs ${catkin_LIBRARIES})
+target_link_libraries(combine_floats ${catkin_LIBRARIES})
 add_dependencies(talker publ_subs_generate_messages_cpp)
 add_dependencies(talker_original publ_subs_generate_messages_cpp)
 
