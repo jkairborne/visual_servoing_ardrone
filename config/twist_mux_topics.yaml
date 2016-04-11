@@ -7,17 +7,17 @@
 
 topics:
 -
-  name    : navigationtopic
-  topic   : talker1
+  name    : KeyboardTopic
+  topic   : key_filtered
   timeout : 0.5
   priority: 100
 -
-  name    : joysticktopic
-  topic   : talker2
+  name    : VisualServoingTopic
+  topic   : vs_output
   timeout : 0.5
   priority: 50
 -
-  name    : keyboardtopic
-  topic   : talker3
+  name    : ZerosTopic
+  topic   : zerotwist
   timeout : 0.5
   priority: 10

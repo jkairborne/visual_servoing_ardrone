@@ -55,10 +55,10 @@ int main(int argc, char** argv)
   ros::Subscriber subz;
   ros::Subscriber subyaw;
 
-  subx = nh.subscribe("talker1", 1000, callbackx);
-  suby = nh.subscribe("talker2", 1000, callbacky);
-  subz = nh.subscribe("/talker3", 1000, callbackz);
-  subyaw = nh.subscribe("yaw_angle", 1000, callbackyaw);
+  subx = nh.subscribe("/ArDrone_pid_x/vs_output_x", 1000, callbackx);
+  suby = nh.subscribe("/ArDrone_pid_y/vs_output_y", 1000, callbacky);
+  subz = nh.subscribe("/ArDrone_pid_z/vs_output_z", 1000, callbackz);
+  subyaw = nh.subscribe("/ArDrone_pid_yaw/vs_output_yaw", 1000, callbackyaw);
 
 
   ros::spin();

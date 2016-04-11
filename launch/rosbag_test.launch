@@ -1,11 +1,13 @@
 <launch>
-	<node pkg="rosbag" type="play" name="player" output="screen" args="--clock /home/jason/ROS/src/jardrone/bagfiles/20160406_all.bag"/>
-	<node pkg="visual_servoing_ardrone" name="listener" type="listener" respawn="true"/>
+       <node pkg="rosbag" type="play" name="player" output="screen" args="--clock /home/jason/ROS/src/jardrone/bagfiles/20160406_all2.bag"/>
+
+	<include file="$(find visual_servoing_ardrone)/launch/indiv_track.launch"/>
+	<node pkg="visual_servoing_ardrone" name="parser" type="parser" respawn="true"/>
 	<node pkg="visual_servoing_ardrone" name="quat_to_rpy" type="quat_to_rpy" respawn="true"/>
 
     <node name="setpoints" pkg="visual_servoing_ardrone" type="setpoints"/>
 
-    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_x" output="screen" >
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_x" output="screen">
       <param name="node_name" value="ArDrone_pid_x" />
       <param name="Kp" value="2.0" />
       <param name="Ki" value="0.0" />
@@ -72,5 +74,15 @@
 
     <node name="filter_empty_msgs" pkg="visual_servoing_ardrone" type="filter_empty_msgs"/>
     <node name="combine_floats" pkg="visual_servoing_ardrone" type="combine_floats"/>
+    <node name="zerotwist" pkg="visual_servoing_ardrone" type="zerotwist"/>
 
+    <node name="vel_mux" pkg="twist_mux" type="twist_mux">
+        <remap from="twist" to="twist_mux/cmd_vel"/>
+	<remap from="cmd_vel_out" to="cmd_vel"/>
+        <rosparam file="$(find visual_servoing_ardrone)/config/twist_mux_topics.yaml" command="load"/>
+        <rosparam file="$(find visual_servoing_ardrone)/config/twist_mux_locks.yaml" command="load"/>
+    </node>
+        <node name="keyboard_controller" pkg="ardrone_tutorials" type="keyboard_controller.py" required="true">
+		<remap from="cmd_vel" to="key_output"/>
+	</node>
 </launch>

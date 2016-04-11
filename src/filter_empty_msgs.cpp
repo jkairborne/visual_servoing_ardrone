@@ -66,7 +66,7 @@ int main(int argc, char **argv)
    * You must call one of the versions of ros::init() before using any other
    * part of the ROS system.
    */
-  ros::init(argc, argv, "listener");
+  ros::init(argc, argv, "filter_node");
 
   /**
    * NodeHandle is the main access point to communications with the ROS system.
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
    * away the oldest ones.
    */
   PassedThrough = n.advertise<geometry_msgs::Twist>("/key_filtered",1000);
-  sub = n.subscribe("/cmd_vel", 1000, chatterCallback);
+  sub = n.subscribe("/key_output", 1000, chatterCallback);
 
   /**
    * ros::spin() will enter a loop, pumping callbacks.  With this version, all
