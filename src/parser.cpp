@@ -37,11 +37,11 @@ ROS_INFO("I heard: [%f]", msg.markers[0].pose.pose.position.x);
         std_msgs::Float64 msgz;
         geometry_msgs::Quaternion msgquat;
 /*  
-      std_msgs::Float64 msgy;
-        std_msgs::Float64 msgz;
- */
         msgx.data = msg.markers[0].pose.pose.position.x;
         msgy.data = msg.markers[0].pose.pose.position.y;
+ */
+        msgx.data = msg.markers[0].pose.pose.position.x/msg.markers[0].pose.pose.position.z;
+        msgy.data = msg.markers[0].pose.pose.position.y/msg.markers[0].pose.pose.position.z;
         msgz.data = msg.markers[0].pose.pose.position.z;
         msgquat = msg.markers[0].pose.pose.orientation;
 /*   

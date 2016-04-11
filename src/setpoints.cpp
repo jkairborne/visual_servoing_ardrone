@@ -47,7 +47,8 @@ int main(int argc, char **argv)
    */
 /*  ros::Publisher spt_xy = n.advertise<std_msgs::Float64>("cmd_vel", 1000);
 */
-  ros::Publisher spt_xy = n.advertise<std_msgs::Float64>("/spt_xy", 1000);
+  ros::Publisher spt_x = n.advertise<std_msgs::Float64>("/spt_x", 1000);
+  ros::Publisher spt_y = n.advertise<std_msgs::Float64>("/spt_y", 1000);
   ros::Publisher spt_z = n.advertise<std_msgs::Float64>("/spt_z", 1000);
 
   ros::Rate loop_rate(100);
@@ -64,14 +65,17 @@ int main(int argc, char **argv)
      
     std_msgs::Float64 msg;
     */
-    std_msgs::Float64 msg;
+    std_msgs::Float64 msgx;
+    std_msgs::Float64 msgy;
     std_msgs::Float64 msgz;
-    float cmd = 0.0;
+    float cmdx = 0.0;
+    float cmdy = 0.25;
     float cmdz = 1.0;
-    msg.data = cmd;
+    msgx.data = cmdx;
+    msgy.data = cmdy;
     msgz.data = cmdz;
     
-    ROS_INFO("we have received %f and cmdz as %f, count %d", cmd, cmdz, count);
+    ROS_INFO("we have received %f, cmdy as %f, cmdz as %f, count %d", cmdy, cmdy, cmdz, count);
 
     /**
      * The publish() function is how you send messages. The parameter
@@ -79,7 +83,8 @@ int main(int argc, char **argv)
      * given as a template parameter to the advertise<>() call, as was done
      * in the constructor above.
      */
-    spt_xy.publish(msg);
+    spt_x.publish(msgx);
+    spt_y.publish(msgy);
     spt_z.publish(msgz);
     ros::spinOnce();
 
