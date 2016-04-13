@@ -19,6 +19,7 @@ void chatterCallback(const ar_track_alvar_msgs::AlvarMarkers& msg)
 {
 ROS_INFO("I heard: [%f]", msg.markers[0].pose.pose.position.x);
 
+        std_msgs::Float64 msgx;
         std_msgs::Float64 msgy;
         std_msgs::Float64 msgz;
         geometry_msgs::Quaternion msgquat;

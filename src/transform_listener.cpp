@@ -8,7 +8,6 @@
 #include "tf/transform_datatypes.h"
 #include "tf/transform_listener.h"
 
-
 ros::Publisher pubx;
 ros::Publisher puby;
 ros::Publisher pubz;
@@ -28,6 +27,30 @@ int main(int argc, char** argv){
   ros::Rate rate(10.0);
   while (node.ok()){
     tf::StampedTransform transform;
+	if (listener.frameExists("/ar_marker_0"))
+	{
+        listener.lookupTransform("/ar_marker_0", "/ardrone_base_bottomcam",  
+                  ros::Time(0), transform);
+        std_msgs::Float64 ypos, xpos, zpos;
+        tf::Quaternion tfquat;
+        geometry_msgs::Quaternion quat;
+        ypos.data = transform.getOrigin().y();
+        xpos.data = transform.getOrigin().x();
+        zpos.data = transform.getOrigin().z();
+        tfquat = transform.getRotation();
+        tf::quaternionTFToMsg(tfquat, quat); 
+        ROS_INFO("I see the transform x is %f and the y is %f",xpos.data,ypos.data);
+        pubx.publish(xpos);
+       puby.publish(ypos);
+       pubz.publish(zpos);
+       pubquat.publish(quat);
+	}
+	else{
+	ROS_INFO("The transform was not found");
+	}
+
+
+/*
     try{
       listener.lookupTransform("/ar_marker_0", "/ardrone_base_bottomcam",  
                                ros::Time(0), transform);
@@ -45,11 +68,7 @@ int main(int argc, char** argv){
        pubz.publish(zpos);
        pubquat.publish(quat);
     }
-    catch (tf::TransformException ex){
-      ROS_ERROR("%s",ex.what());
-      ros::Duration(1.0).sleep();
-    }
-
+*/  
     rate.sleep();
   }
   return 0;
