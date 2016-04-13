@@ -17,6 +17,10 @@ ros::Subscriber sub;
 
 void chatterCallback(const ar_track_alvar_msgs::AlvarMarkers& msg)
 {
+ROS_INFO("I here");
+if (msg.markers.size()==0)
+return;
+
 ROS_INFO("I heard: [%f]", msg.markers[0].pose.pose.position.x);
 
         std_msgs::Float64 msgx;
@@ -47,6 +51,7 @@ int main(int argc, char **argv)
   puby = n.advertise<std_msgs::Float64>("/pose_y",1000);
   pubz = n.advertise<std_msgs::Float64>("/pose_z",1000);
   pubquat = n.advertise<geometry_msgs::Quaternion>("/pose_quat",1000);
+
   sub = n.subscribe("/ar_pose_marker", 1000, chatterCallback);
 
   ros::spin();
