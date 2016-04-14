@@ -14,22 +14,30 @@ ros::Publisher pubz;
 ros::Publisher pubquat;
 ros::Subscriber sub;
 
+tf::StampedTransform transform;
 std_msgs::Float64 ypos, xpos, zpos;
 tf::Quaternion tfquat;
 geometry_msgs::Quaternion quat;
 
 void chatterCallback(const ar_track_alvar_msgs::AlvarMarkers& msg)
+
 {
 if (msg.markers.size()==0)
 {
-ROS_INFO("I made it to the callback function");
+	ROS_INFO("made it just past msg.markers.size");
 return;
 }
-ROS_INFO("I heard: [%f]", msg.markers[0].pose.pose.position.x);
-    tf::StampedTransform transform;
+try{
   tf::TransformListener listener;
-        listener.lookupTransform("/ar_marker_0", "/ardrone_base_bottomcam",  
-                  ros::Time(0), transform);
+        listener.lookupTransform("/ardrone_base_bottomcam", "/ar_marker_0",  
+        ros::Time(0), transform);
+    }
+   catch (tf::TransformException ex){
+      ROS_ERROR("%s",ex.what());
+      ros::Duration(1.0).sleep();
+    }
+
+
         ypos.data = transform.getOrigin().y();
         xpos.data = transform.getOrigin().x();
         zpos.data = transform.getOrigin().z();
@@ -58,10 +66,11 @@ int main(int argc, char** argv){
   pubz = node.advertise<std_msgs::Float64>("/pose_z",1000);
   pubquat = node.advertise<geometry_msgs::Quaternion>("/pose_quat",1000);
 
-  ros::Rate rate(10.0);
- 
-
 	sub = node.subscribe("/ar_pose_marker", 1000, chatterCallback);
+
+
+
+
 /*
     try{
       listener.lookupTransform("/ar_marker_0", "/ardrone_base_bottomcam",  
@@ -81,7 +90,6 @@ int main(int argc, char** argv){
        pubquat.publish(quat);
 
 */  
-    rate.sleep();
-  
+  ros::spin(); 
   return 0;
 };
