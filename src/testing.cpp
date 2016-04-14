@@ -28,7 +28,7 @@ int main(int argc, char** argv){
     tf::StampedTransform transform;
     try{
       ros::Time now = ros::Time::now();
-      listener.lookupTransform("/odom", "/ar_marker_0",
+      listener.lookupTransform("/ar_marker_0", "/odom",
                                ros::Time(0), transform);
     }
     catch (tf::TransformException &ex) {
