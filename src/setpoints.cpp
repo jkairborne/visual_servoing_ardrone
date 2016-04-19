@@ -69,8 +69,8 @@ int main(int argc, char **argv)
     std_msgs::Float64 msgy;
     std_msgs::Float64 msgz;
     float cmdx = 0.0;
-    float cmdy = 0.25;
-    float cmdz = 2.0;
+    float cmdy = 0.2;
+    float cmdz = 0.5;
     msgx.data = cmdx;
     msgy.data = cmdy;
     msgz.data = cmdz;

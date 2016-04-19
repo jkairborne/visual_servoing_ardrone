@@ -15,9 +15,9 @@ topics:
   name    : VisualServoingTopic
   topic   : vs_output
   timeout : 0.1
-  priority: 50
+  priority: 15
 -
   name    : ZerosTopic
   topic   : zerotwist
-  timeout : 0.5
+  timeout : 0.1
   priority: 10
