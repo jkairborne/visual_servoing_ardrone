@@ -1,4 +1,7 @@
 <launch>
+        <node name="keyboard_controller" pkg="ardrone_tutorials" type="keyboard_controller.py" required="true">
+		<remap from="cmd_vel" to="key_output"/>
+	</node>
 	<include file="$(find visual_servoing_ardrone)/launch/ardrone.launch"/>
 	<node pkg="visual_servoing_ardrone" name="tag_detect" type="tag_detect" respawn="true"/>
 
@@ -8,7 +11,7 @@
       <param name="node_name" value="ArDrone_pid_x" />
       <param name="Kp" value="0.0005" />
       <param name="Ki" value="0.0" />
-      <param name="Kd" value="0.0" />
+      <param name="Kd" value="0.0001" />
       <param name="upper_limit" value="1" />
       <param name="lower_limit" value="-1" />
       <param name="windup_limit" value="1" />
@@ -39,8 +42,8 @@
 
     <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_z" output="screen" >
       <param name="node_name" value="ArDrone_pid_z" />
-      <param name="Kp" value="-0.003" />
-      <param name="Ki" value="-0.0006" />
+      <param name="Kp" value="0.003" />
+      <param name="Ki" value="0.0006" />
       <param name="Kd" value="0.0" />
       <param name="upper_limit" value="1" />
       <param name="lower_limit" value="-1" />
@@ -48,10 +51,27 @@
       <param name="diagnostic_period" value="0.25" />
       <param name="max_loop_frequency" value="115.0" />
       <param name="min_loop_frequency" value="85.0" />
-      <param name="topic_from_plant" value="/pose_width" />
+      <param name="topic_from_plant" value="/pose_z" />
       <param name="topic_from_controller" value="vs_output_z" />
       <remap from="setpoint" to="/spt_z"/>
      </node>
+<!--
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_yaw" output="screen" >
+      <param name="node_name" value="ArDrone_pid_yaw" />
+      <param name="Kp" value="0.005" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.0" />
+      <param name="upper_limit" value="1" />
+      <param name="lower_limit" value="-1" />
+      <param name="windup_limit" value="1" />
+      <param name="diagnostic_period" value="0.25" />
+      <param name="max_loop_frequency" value="115.0" />
+      <param name="min_loop_frequency" value="85.0" />
+      <param name="topic_from_plant" value="/pose_yaw" />
+      <param name="topic_from_controller" value="vs_output_yaw" />
+      <remap from="setpoint" to="/spt_yaw"/>
+     </node>
+-->
 
     <node name="filter_empty_msgs" pkg="visual_servoing_ardrone" type="filter_empty_msgs"/>
     <node name="combine_floats" pkg="visual_servoing_ardrone" type="combine_floats"/>
@@ -63,7 +83,4 @@
         <rosparam file="$(find visual_servoing_ardrone)/config/twist_mux_topics.yaml" command="load"/>
         <rosparam file="$(find visual_servoing_ardrone)/config/twist_mux_locks.yaml" command="load"/>
     </node>
-        <node name="keyboard_controller" pkg="ardrone_tutorials" type="keyboard_controller.py" required="true">
-		<remap from="cmd_vel" to="key_output"/>
-	</node>
 </launch>
