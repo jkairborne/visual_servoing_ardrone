@@ -11,16 +11,16 @@
       <param name="node_name" value="ArDrone_pid_x" />
       <param name="Kp" value="0.0005" />
       <param name="Ki" value="0.0" />
-      <param name="Kd" value="0.0001" />
+      <param name="Kd" value="0.0" />
       <param name="upper_limit" value="1" />
       <param name="lower_limit" value="-1" />
       <param name="windup_limit" value="1" />
       <param name="diagnostic_period" value="0.25" />
       <param name="max_loop_frequency" value="115.0" />
       <param name="min_loop_frequency" value="85.0" />
-      <param name="topic_from_plant" value="/pose_y" />
+      <param name="topic_from_plant" value="/pose_x" />
       <param name="topic_from_controller" value="vs_output_x" />
-      <remap from="setpoint" to="/spt_y"/>
+      <remap from="setpoint" to="/spt_x"/>
      </node>
 
 
@@ -35,9 +35,9 @@
       <param name="diagnostic_period" value="0.25" />
       <param name="max_loop_frequency" value="115.0" />
       <param name="min_loop_frequency" value="85.0" />
-      <param name="topic_from_plant" value="/pose_x" />
+      <param name="topic_from_plant" value="/pose_y" />
       <param name="topic_from_controller" value="vs_output_y" />
-      <remap from="setpoint" to="/spt_x"/>
+      <remap from="setpoint" to="/spt_y"/>
      </node>
 
     <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_z" output="screen" >

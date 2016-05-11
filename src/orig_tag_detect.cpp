@@ -23,10 +23,20 @@ return;
 	double xpos0, ypos0;
 	double rotx, roty, rotz;
 
+/*
+        xpos1 = (msg.tags_xc[0]-500)/1000;
+        ypos1 = (msg.tags_yc[0]-500)/1000;
+        msgyaw.data = msg.tags_orientation[0];
+        zpos1 = msg.tags_distance[0];
+*/
+
         msgx.data = (msg.tags_xc[0]-500.0)/1000.0;
         msgy.data = (msg.tags_yc[0]-500.0)/1000.0;
 
-
+/*
+        xpos0 = (msg.tags_xc[0]-500.0)/1000.0;
+        ypos0 = (msg.tags_yc[0]-500.0)/1000.0;
+*/
 
         msgyaw.data = msg.tags_orientation[0];
         msgz.data = msg.tags_distance[0];
@@ -34,17 +44,22 @@ return;
 	xpos1 = xpos0 * msgz.data;
 	ypos1 = ypos0 * msgz.data;
 
-	rotx = msg.rotX*M_PI/180.0;
-	roty = msg.rotY*M_PI/180.0;
-	rotz = msg.rotZ*M_PI/180.0;
-	double derotx, deroty, derotz, xprime, yprime;
+	rotx = msg.rotX*M_PI/180;
+	roty = msg.rotY*M_PI/180;
+	rotz = msg.rotZ*M_PI/180;
+	double derotx, deroty, derotz;
 
-	xprime = msg.tags_distance[0]*sin(rotx - atan((msg.tags_xc[0]-500.0)/878.41)); // the 878.41 is the focal length in the x direction in units of pixels
-	yprime = sin(roty - atan((msg.tags_yc[0]-500.0)/917.19)); // the 878.41 is the focal length in the x direction in units of pixels
+/*
+  msgx.data = (cos(rotz)*cos(roty))*xpos1 - cos(roty)*sin(rotz)*ypos1 + sin(roty)*zpos1;
+  msgy.data =  (cos(rotx)*sin(rotz) + cos(rotz)*sin(roty)*sin(rotx))*xpos1 + (cos(rotz)*cos(rotx) - sin(rotz)*sin(roty)*sin(rotx))*ypos1 - cos(roty)*sin(rotx)*zpos1;
 
-//	ROS_INFO("x: %f, xprime: %f, rotx %f, tags_xc %d, distance %f\n",msgx.data,xprime, rotx, msg.tags_xc[0], msg.tags_distance[0]);
-//	ROS_INFO("tag-500: %f, atan(): %f, rotx-atan: %f, xprime: %f",((msg.tags_xc[0]-500.0)/878.4),atan((msg.tags_xc[0]-500.0)/878.4), (rotx-atan((msg.tags_xc[0]-500)/878.4)), xprime);
-	ROS_INFO("xprime %f, y: %f, yprime: %f\n", xprime, msgy.data, yprime); 
+  msgz.data = (sin(rotz)*sin(rotx) - cos(rotz)*cos(rotx)*sin(roty))*xpos1 + (cos(rotz)*sin(rotx) + cos(rotx)*sin(rotz)*sin(roty))*ypos1 + cos(roty)*cos(rotx)*zpos1;
+*/
+
+/*
+	double random2 = cos(rotx);
+	ROS_INFO("%f %f %f", rotx, roty, random2); 
+*/
         pubx.publish(msgx);
         puby.publish(msgy);
         pubyaw.publish(msgyaw);
@@ -70,3 +85,11 @@ int main(int argc, char **argv)
   ros::spin();
   return 0;
 }
+
+
+
+/*
+  msgx.data = (cos(rotz)*cos(roty))*xpos1 + (cos(rotz)*sin(roty)*sin(rotx)-sin(rotz)*cos(rotx))*ypos1 + (cos(rotz)*sin(roty)*cos(rotx)+sin(rotz)*sin(rotx))*zpos1;
+  msgy.data = sin(rotz)*cos(roty)*xpos1 + (sin(rotz)*sin(roty)*sin(rotx)+cos(rotz)*cos(rotx))*ypos1 + (sin(rotz)*sin(roty)*cos(rotx)-cos(rotz)*sin(rotx))*zpos1;
+  msgz.data = -sin(roty)*xpos1+cos(roty)*sin(rotx)*ypos1+cos(roty)*cos(rotx)*zpos1;	
+*/
