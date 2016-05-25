@@ -23,8 +23,6 @@ return;
 	double xpos0, ypos0;
 	double rotx, roty, rotz;
 
-        msgx.data = (msg.tags_xc[0]-500.0)/1000.0;
-        msgy.data = (msg.tags_yc[0]-500.0)/1000.0;
 
 
 
@@ -42,6 +40,8 @@ return;
 	xprime = msg.tags_distance[0]*sin(rotx - atan((msg.tags_xc[0]-500.0)/878.41)); // the 878.41 is the focal length in the x direction in units of pixels
 	yprime = sin(roty - atan((msg.tags_yc[0]-500.0)/917.19)); // the 878.41 is the focal length in the x direction in units of pixels
 
+        msgx.data = xprime;
+        msgy.data = yprime;
 //	ROS_INFO("x: %f, xprime: %f, rotx %f, tags_xc %d, distance %f\n",msgx.data,xprime, rotx, msg.tags_xc[0], msg.tags_distance[0]);
 //	ROS_INFO("tag-500: %f, atan(): %f, rotx-atan: %f, xprime: %f",((msg.tags_xc[0]-500.0)/878.4),atan((msg.tags_xc[0]-500.0)/878.4), (rotx-atan((msg.tags_xc[0]-500)/878.4)), xprime);
 	ROS_INFO("xprime %f, y: %f, yprime: %f\n", xprime, msgy.data, yprime); 
