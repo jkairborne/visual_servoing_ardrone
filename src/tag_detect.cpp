@@ -23,9 +23,6 @@ return;
 	double xpos0, ypos0;
 	double rotx, roty, rotz;
 
-
-
-
         msgyaw.data = msg.tags_orientation[0];
         msgz.data = msg.tags_distance[0];
 
@@ -38,7 +35,7 @@ return;
 	double derotx, deroty, derotz, xprime, yprime;
 
 	xprime = msg.tags_distance[0]*sin(rotx - atan((msg.tags_xc[0]-500.0)/878.41)); // the 878.41 is the focal length in the x direction in units of pixels
-	yprime = sin(roty - atan((msg.tags_yc[0]-500.0)/917.19)); // the 878.41 is the focal length in the x direction in units of pixels
+	yprime = msg.tags_distance[0]*sin(roty - atan((msg.tags_yc[0]-500.0)/917.19)); // the 878.41 is the focal length in the x direction in units of pixels
 
         msgx.data = xprime;
         msgy.data = yprime;

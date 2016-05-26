@@ -24,8 +24,8 @@ int main(int argc, char **argv)
     std_msgs::Float64 msgy;
     std_msgs::Float64 msgz;
     std_msgs::Float64 msgyaw;
-    float cmdx = 500;
-    float cmdy = 500;
+    float cmdx = 0.0;
+    float cmdy = 0.0;
     float cmdz = 120;
     float cmdyaw = 270;
     msgx.data = cmdx;
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
     spt_x.publish(msgx);
     spt_y.publish(msgy);
     spt_z.publish(msgz);
-    spt_yaw.publish(msgz);
+    spt_yaw.publish(msgyaw);
     ros::spinOnce();
 
     loop_rate.sleep();
