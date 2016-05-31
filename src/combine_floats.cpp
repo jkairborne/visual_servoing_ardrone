@@ -8,14 +8,14 @@ ros::Publisher pub;
 
 void callbackx(const std_msgs::Float64& input1)
 {
-  vs_output.linear.x = input1.data;
+  vs_output.linear.y = input1.data;
   pub.publish(vs_output);
 }
 
 
 void callbacky(const std_msgs::Float64& input2)
 {
-  vs_output.linear.y = input2.data;
+  vs_output.linear.x = input2.data;
   pub.publish(vs_output);
 }
 

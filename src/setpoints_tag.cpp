@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     float cmdx = 0.0;
     float cmdy = 0.0;
     float cmdz = 120;
-    float cmdyaw = 270;
+    float cmdyaw = 180;
     msgx.data = cmdx;
     msgy.data = cmdy;
     msgz.data = cmdz;

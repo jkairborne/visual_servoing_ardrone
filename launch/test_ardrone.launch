@@ -26,7 +26,7 @@
 
     <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_y" output="screen" >
       <param name="node_name" value="ArDrone_pid_y" />
-      <param name="Kp" value="0.01" />
+      <param name="Kp" value="0.01" /> 
       <param name="Ki" value="0.0" />
       <param name="Kd" value="0.0" />
       <param name="upper_limit" value="1" />
@@ -55,10 +55,10 @@
       <param name="topic_from_controller" value="vs_output_z" />
       <remap from="setpoint" to="/spt_z"/>
      </node>
-<!--
+
     <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_yaw" output="screen" >
       <param name="node_name" value="ArDrone_pid_yaw" />
-      <param name="Kp" value="0.05" />
+      <param name="Kp" value="-0.005" />
       <param name="Ki" value="0.0" />
       <param name="Kd" value="0.0" />
       <param name="upper_limit" value="1" />
@@ -71,7 +71,7 @@
       <param name="topic_from_controller" value="vs_output_yaw" />
       <remap from="setpoint" to="/spt_yaw"/>
      </node>
--->
+
 
     <node name="filter_empty_msgs" pkg="visual_servoing_ardrone" type="filter_empty_msgs"/>
     <node name="combine_floats" pkg="visual_servoing_ardrone" type="combine_floats"/>
