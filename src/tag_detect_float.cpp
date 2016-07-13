@@ -2,7 +2,6 @@
 #include "std_msgs/String.h"
 #include "ardrone_autonomy/Navdata.h"
 #include "std_msgs/Float64.h"
-#include "visual_servoing_ardrone/StampedFloat.h"
 #include "cmath"
 
 ros::Publisher pubx;
@@ -15,18 +14,20 @@ void chatterCallback(const ardrone_autonomy::Navdata& msg)
 {
 if (msg.tags_count==0)
 return;
-        visual_servoing_ardrone::StampedFloat msgx;
-        visual_servoing_ardrone::StampedFloat msgy;
-        visual_servoing_ardrone::StampedFloat msgyaw;
-        visual_servoing_ardrone::StampedFloat msgz;
+        std_msgs::Float64 msgx;
+        std_msgs::Float64 msgy;
+        std_msgs::Float64 msgyaw;
+        std_msgs::Float64 msgz;
 
 	double xpos1, ypos1, zpos1;
 	double xpos0, ypos0;
 	double rotx, roty, rotz;
 
+        msgyaw.data = msg.tags_orientation[0];
+        msgz.data = msg.tags_distance[0];
 
-	xpos1 = xpos0 * msg.tags_distance[0];
-	ypos1 = ypos0 * msg.tags_distance[0];
+	xpos1 = xpos0 * msgz.data;
+	ypos1 = ypos0 * msgz.data;
 
 	rotx = msg.rotX*M_PI/180.0;
 	roty = msg.rotY*M_PI/180.0;
@@ -36,20 +37,11 @@ return;
 	xprime = msg.tags_distance[0]*sin(rotx - atan((msg.tags_xc[0]-500.0)/878.41)); // the 878.41 is the focal length in the x direction in units of pixels
 	yprime = msg.tags_distance[0]*sin(roty - atan((msg.tags_yc[0]-500.0)/917.19)); // the 878.41 is the focal length in the x direction in units of pixels
 
-        msgx.num = xprime;
-        msgy.num = yprime;
-        msgyaw.num = msg.tags_orientation[0];
-        msgz.num = msg.tags_distance[0];
-
-	msgx.imgtime = msg.header.stamp;
-	msgy.imgtime = msg.header.stamp;
-	msgyaw.imgtime = msg.header.stamp;
-	msgz.imgtime = msg.header.stamp;
-
-
+        msgx.data = xprime;
+        msgy.data = yprime;
 //	ROS_INFO("x: %f, xprime: %f, rotx %f, tags_xc %d, distance %f\n",msgx.data,xprime, rotx, msg.tags_xc[0], msg.tags_distance[0]);
 //	ROS_INFO("tag-500: %f, atan(): %f, rotx-atan: %f, xprime: %f",((msg.tags_xc[0]-500.0)/878.4),atan((msg.tags_xc[0]-500.0)/878.4), (rotx-atan((msg.tags_xc[0]-500)/878.4)), xprime);
-	ROS_INFO("xprime %f, y: %f, yprime: %f\n", xprime, msgy.num, yprime); 
+	ROS_INFO("xprime %f, y: %f, yprime: %f\n", xprime, msgy.data, yprime); 
         pubx.publish(msgx);
         puby.publish(msgy);
         pubyaw.publish(msgyaw);
@@ -65,10 +57,10 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "listener");
   ros::NodeHandle n;
 
-  pubx = n.advertise<visual_servoing_ardrone::StampedFloat>("/pose_x",1000);
-  puby = n.advertise<visual_servoing_ardrone::StampedFloat>("/pose_y",1000);
-  pubyaw = n.advertise<visual_servoing_ardrone::StampedFloat>("/pose_yaw",1000);
-  pubz = n.advertise<visual_servoing_ardrone::StampedFloat>("/pose_z",1000);
+  pubx = n.advertise<std_msgs::Float64>("/pose_x",1000);
+  puby = n.advertise<std_msgs::Float64>("/pose_y",1000);
+  pubyaw = n.advertise<std_msgs::Float64>("/pose_yaw",1000);
+  pubz = n.advertise<std_msgs::Float64>("/pose_z",1000);
 
   sub = n.subscribe("/ardrone/navdata", 1000, chatterCallback);
 

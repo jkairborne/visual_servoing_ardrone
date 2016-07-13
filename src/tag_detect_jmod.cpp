@@ -11,6 +11,9 @@ ros::Publisher pubyaw;
 ros::Publisher pubz;
 ros::Subscriber sub;
 
+// These values will be global, which means we could have problems for the first three values at times (i.e. when target is lost for a while then re-acquired);
+double xold2, xold3, yold2, yold3;
+
 void chatterCallback(const ardrone_autonomy::Navdata& msg)
 {
 if (msg.tags_count==0)
@@ -36,16 +39,32 @@ return;
 	xprime = msg.tags_distance[0]*sin(rotx - atan((msg.tags_xc[0]-500.0)/878.41)); // the 878.41 is the focal length in the x direction in units of pixels
 	yprime = msg.tags_distance[0]*sin(roty - atan((msg.tags_yc[0]-500.0)/917.19)); // the 878.41 is the focal length in the x direction in units of pixels
 
-        msgx.num = xprime;
-        msgy.num = yprime;
-        msgyaw.num = msg.tags_orientation[0];
-        msgz.num = msg.tags_distance[0];
-
 	msgx.imgtime = msg.header.stamp;
 	msgy.imgtime = msg.header.stamp;
 	msgyaw.imgtime = msg.header.stamp;
 	msgz.imgtime = msg.header.stamp;
 
+	xold3 = xold2;
+	yold3 = yold2;
+	xold2 = xprime;
+	yold2 = yprime;
+
+	if (((ros::Time::now().toSec() - msg.header.stamp.sec)) > 1.0){
+        	msgx.num = xprime;
+        	msgy.num = yprime;
+		ROS_INFO("Made it into the if statement!");
+	} // end if
+	else{
+		msgx.num = (xprime + xold2 + xold3)/3.0;
+		msgy.num = (yprime + yold2 + yold3)/3.0;
+		ROS_INFO("Made it into the else");	
+	} //end else 
+ ROS_INFO("%f %f %f: %f  ; %f %f %f: %f", xprime, xold2, xold3, msgx.num, yprime, yold2, yold3, msgy.num);
+       msgyaw.num = msg.tags_orientation[0];
+       msgz.num = msg.tags_distance[0];
+
+
+	
 
 //	ROS_INFO("x: %f, xprime: %f, rotx %f, tags_xc %d, distance %f\n",msgx.data,xprime, rotx, msg.tags_xc[0], msg.tags_distance[0]);
 //	ROS_INFO("tag-500: %f, atan(): %f, rotx-atan: %f, xprime: %f",((msg.tags_xc[0]-500.0)/878.4),atan((msg.tags_xc[0]-500.0)/878.4), (rotx-atan((msg.tags_xc[0]-500)/878.4)), xprime);

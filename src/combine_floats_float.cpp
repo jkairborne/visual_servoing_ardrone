@@ -1,49 +1,42 @@
 #include <ros/ros.h>
 #include <std_msgs/Float64.h>
 #include <geometry_msgs/Twist.h>
-#include <visual_servoing_ardrone/StampedFloat.h>
-#include <ros/time.h>
 
 geometry_msgs::Twist vs_output;
-ros::Time lasttime;
 
 ros::Publisher pub;
-// ros::Publisher pubtime;
 
-void callbackx(const visual_servoing_ardrone::StampedFloat& input1)
+void callbackx(const std_msgs::Float64& input1)
 {
-  vs_output.linear.y = input1.num;
-  pub.publish(vs_output);
-  lasttime = input1.imgtime;
-//  pubtime.publish(lasttime);
-  ROS_INFO("I have made it into callback x, now publishing time %i", lasttime.nsec);
-}
-
-
-
-void callbacky(const visual_servoing_ardrone::StampedFloat& input2)
-{
-  vs_output.linear.x = input2.num;
-  pub.publish(vs_output);
-}
-
-void callbackz(const visual_servoing_ardrone::StampedFloat& input3)
-{
-  vs_output.linear.z = input3.num;
+  vs_output.linear.y = input1.data;
   pub.publish(vs_output);
 }
 
 
-void callbackyaw(const visual_servoing_ardrone::StampedFloat& input4)
+void callbacky(const std_msgs::Float64& input2)
 {
-  vs_output.angular.z = input4.num;
+  vs_output.linear.x = input2.data;
   pub.publish(vs_output);
 }
+
+void callbackz(const std_msgs::Float64& input3)
+{
+  vs_output.linear.z = input3.data;
+  pub.publish(vs_output);
+}
+
+
+void callbackyaw(const std_msgs::Float64& input4)
+{
+  vs_output.angular.z = input4.data;
+  pub.publish(vs_output);
+}
+
+
 
 int main(int argc, char** argv)
 {
   
-
   vs_output.linear.x = 0.0;
   vs_output.linear.y = 0.0;
   vs_output.linear.z = 0.0;
@@ -56,7 +49,6 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
 
   pub = nh.advertise<geometry_msgs::Twist>("/vs_output",1000);
-//  pubtime = nh.advertise<ros::Time>("/something",1000);
 
   ros::Subscriber subx;
   ros::Subscriber suby;
