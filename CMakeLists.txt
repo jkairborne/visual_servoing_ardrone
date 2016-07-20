@@ -40,6 +40,11 @@ target_link_libraries(tag_detect ${catkin_LIBRARIES})
 target_link_libraries(tag_detect2 ${catkin_LIBRARIES})
 target_link_libraries(setpoints_tag ${catkin_LIBRARIES})
 
+add_executable(roomba_vel src/roomba_vel.cpp)
+target_link_libraries(roomba_vel ${catkin_LIBRARIES})
+add_executable(roomba_acc src/roomba_acc.cpp)
+target_link_libraries(roomba_acc ${catkin_LIBRARIES})
+
 #add_executable(listen_to_rpy src/listen_to_rpy.cpp)
 #add_executable(quat_to_rpy src/quat_to_rpy.cpp)
 #add_executable(setpoints src/setpoints.cpp)

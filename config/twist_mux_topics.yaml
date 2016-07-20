@@ -12,6 +12,11 @@ topics:
   timeout : 0.1
   priority: 100
 -
+  name    : NoTagDetected
+  topic   : notag_zerotwist
+  timeout : 0.1
+  priority: 50
+-
   name    : VisualServoingTopic
   topic   : vs_output
   timeout : 0.05
