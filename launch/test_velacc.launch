@@ -75,7 +75,7 @@
 
     <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_xvel" output="screen" >
       <param name="node_name" value="ArDrone_pid_xvel" />
-      <param name="Kp" value="10000.01" />
+      <param name="Kp" value="0.1" />
       <param name="Ki" value="0.0" />
       <param name="Kd" value="0.0" />
       <param name="upper_limit" value="1" />
@@ -91,7 +91,7 @@
 
     <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_xacc" output="screen" >
       <param name="node_name" value="ArDrone_pid_xacc" />
-      <param name="Kp" value="0.01" />
+      <param name="Kp" value="0.1" />
       <param name="Ki" value="0.0" />
       <param name="Kd" value="0.0" />
       <param name="upper_limit" value="1" />

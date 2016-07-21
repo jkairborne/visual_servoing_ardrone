@@ -28,7 +28,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "acceleration");
   ros::NodeHandle n;
 
-  pub = n.advertise<std_msgs::Float64>("/acc_roomba", 1000);
+  pub = n.advertise<std_msgs::Float64>("/roomba_acc", 1000);
 	
   ros::Subscriber roomba_vel;
   newtime = ros::Time::now();
