@@ -14,7 +14,7 @@ topics:
 -
   name    : NoTagDetected
   topic   : notag_zerotwist
-  timeout : 0.1
+  timeout : 0.05
   priority: 50
 -
   name    : VisualServoingTopic
@@ -24,5 +24,5 @@ topics:
 -
   name    : ZerosTopic
   topic   : zerotwist
-  timeout : 0.1
+  timeout : 0.05
   priority: 10

@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     geometry_msgs::TwistStamped cmdvel_acc;
     std_msgs::Float64 xvel_control;
 //    float cmdx = 1*sin(count/100.0);
-    float cmdx = 0.5*sin(count/100.0);
+    float cmdx = 0.25*sin(count/200.0);
     float cmdz = 0.000;
 
 	// Populate the Twist message to be sent to the Roomba itself
