@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 	
   ros::Subscriber roomba_vel;
   newtime = ros::Time::now();
-  roomba_vel  = n.subscribe("/cmd_vel_mux/input/teleop", 1000, callbackacc);
+  roomba_vel  = n.subscribe("roomba_vel_cmd", 1000, callbackacc);
 
   ros::Rate loop_rate(100);
 
