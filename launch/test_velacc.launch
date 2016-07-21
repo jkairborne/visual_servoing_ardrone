@@ -75,7 +75,7 @@
 
     <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_xvel" output="screen" >
       <param name="node_name" value="ArDrone_pid_xvel" />
-      <param name="Kp" value="0.01" />
+      <param name="Kp" value="10000.01" />
       <param name="Ki" value="0.0" />
       <param name="Kd" value="0.0" />
       <param name="upper_limit" value="1" />
@@ -84,7 +84,7 @@
       <param name="diagnostic_period" value="0.25" />
       <param name="max_loop_frequency" value="115.0" />
       <param name="min_loop_frequency" value="85.0" />
-      <param name="topic_from_plant" value="/cmd_vel_roomba" />
+      <param name="topic_from_plant" value="/roomba_vel_x" />
       <param name="topic_from_controller" value="vs_output_xvel" />
       <remap from="setpoint" to="/spt_x"/>
      </node>
@@ -105,6 +105,8 @@
       <remap from="setpoint" to="/spt_x"/>
      </node>
 
+	<node name="roomba_vel" pkg="visual_servoing_ardrone" type="roomba_vel"/>
+	<node name="roomba_acc" pkg="visual_servoing_ardrone" type="roomba_acc"/>
 
     <node name="filter_empty_msgs" pkg="visual_servoing_ardrone" type="filter_empty_msgs"/>
     <node name="combine_floats" pkg="visual_servoing_ardrone" type="combine_floats"/>
