@@ -45,6 +45,11 @@ target_link_libraries(roomba_vel ${catkin_LIBRARIES})
 add_executable(roomba_acc src/roomba_acc.cpp)
 target_link_libraries(roomba_acc ${catkin_LIBRARIES})
 
+add_executable(vicon src/vicon.cpp)
+target_link_libraries(vicon ${catkin_LIBRARIES})
+add_executable(testtalker src/testtalker.cpp)
+target_link_libraries(testtalker ${catkin_LIBRARIES})
+
 #add_executable(listen_to_rpy src/listen_to_rpy.cpp)
 #add_executable(quat_to_rpy src/quat_to_rpy.cpp)
 #add_executable(setpoints src/setpoints.cpp)
