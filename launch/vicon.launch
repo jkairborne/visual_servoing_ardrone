@@ -1,0 +1,107 @@
+<launch>
+
+    <node name="setpoints_tag" pkg="visual_servoing_ardrone" type="setpoints_tag"/>
+
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_x" output="screen">
+      <param name="node_name" value="ArDrone_pid_x" />
+      <param name="Kp" value="-0.002" />
+      <param name="Ki" value="-0.0001" />
+      <param name="Kd" value="-0.003" />
+      <param name="upper_limit" value="0.5" />
+      <param name="lower_limit" value="-0.5" />
+      <param name="windup_limit" value="1" />
+      <param name="diagnostic_period" value="0.25" />
+      <param name="max_loop_frequency" value="115.0" />
+      <param name="min_loop_frequency" value="85.0" />
+      <param name="topic_from_plant" value="/topid_x" />
+      <param name="topic_from_controller" value="vs_output_x" />
+      <remap from="setpoint" to="/spt_x"/>
+     </node>
+
+
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_y" output="screen" >
+      <param name="node_name" value="ArDrone_pid_y" />
+      <param name="Kp" value="-0.002" /> 
+      <param name="Ki" value="-0.0001" />
+      <param name="Kd" value="-0.003" />
+      <param name="upper_limit" value="0.5" />
+      <param name="lower_limit" value="-0.5" />
+      <param name="windup_limit" value="1" />
+      <param name="diagnostic_period" value="0.25" />
+      <param name="max_loop_frequency" value="115.0" />
+      <param name="min_loop_frequency" value="85.0" />
+      <param name="topic_from_plant" value="/topid_y" />
+      <param name="topic_from_controller" value="vs_output_y" />
+      <remap from="setpoint" to="/spt_y"/>
+     </node>
+
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_z" output="screen" >
+      <param name="node_name" value="ArDrone_pid_z" />
+      <param name="Kp" value="0.01" />
+      <param name="Ki" value="0.0006" />
+      <param name="Kd" value="0.0" />
+      <param name="upper_limit" value="1" />
+      <param name="lower_limit" value="-1" />
+      <param name="windup_limit" value="1" />
+      <param name="diagnostic_period" value="0.25" />
+      <param name="max_loop_frequency" value="115.0" />
+      <param name="min_loop_frequency" value="85.0" />
+      <param name="topic_from_plant" value="/topid_z" />
+      <param name="topic_from_controller" value="vs_output_z" />
+      <remap from="setpoint" to="/spt_z"/>
+     </node>
+
+    <node name="controller" pkg="pid" type="controller" ns="ArDrone_pid_yaw" output="screen" >
+      <param name="node_name" value="ArDrone_pid_yaw" />
+      <param name="Kp" value="-0.005" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.0" />
+      <param name="upper_limit" value="1" />
+      <param name="lower_limit" value="-1" />
+      <param name="windup_limit" value="1" />
+      <param name="diagnostic_period" value="0.25" />
+      <param name="max_loop_frequency" value="115.0" />
+      <param name="min_loop_frequency" value="85.0" />
+      <param name="topic_from_plant" value="/pose_yaw" />
+      <param name="topic_from_controller" value="vs_output_yaw" />
+      <remap from="setpoint" to="/spt_yaw"/>
+     </node>
+
+	<node name="roomba_vel" pkg="visual_servoing_ardrone" type="roomba_vel"/>
+	<node name="roomba_acc" pkg="visual_servoing_ardrone" type="roomba_acc"/>
+
+    <node name="filter_empty_msgs" pkg="visual_servoing_ardrone" type="filter_empty_msgs"/>
+    <node name="combine_floats" pkg="visual_servoing_ardrone" type="combine_floats"/>
+    <node name="zerotwist" pkg="visual_servoing_ardrone" type="zerotwist"/>
+
+    <node name="vel_mux" pkg="twist_mux" type="twist_mux">
+        <remap from="twist" to="twist_mux/cmd_vel"/>
+		<remap from="cmd_vel_out" to="cmd_vel"/>
+        <rosparam file="$(find visual_servoing_ardrone)/config/twist_mux_topics.yaml" command="load"/>
+        <rosparam file="$(find visual_servoing_ardrone)/config/twist_mux_locks.yaml" command="load"/>
+    </node>
+
+
+<!-- Need to include the turtlebot_bringup minimal.launch file -->
+	<include file="$(find turtlebot_bringup)/launch/minimal.launch"/> 
+
+
+<!--
+  	<node pkg="turtlebot_teleop" type="turtlebot_teleop_key" name="turtlebot_teleop_keyboard"  output="screen" launch-prefix="xterm -e">
+    	<param name="scale_linear" value="0.5" type="double"/>
+    	<param name="scale_angular" value="1.5" type="double"/>
+    	<remap from="turtlebot_teleop_keyboard/cmd_vel" to="cmd_vel_mux/input/teleop"/>
+  	</node>
+
+
+	<node pkg="visual_servoing_ardrone" type="filter_empty_msgs" name="filter_turtle_msgs">
+		<remap from="/Key_output" to="/key_turtle"/>
+		<remap from="/Filtered_key" to="/filtered_turtle"/>
+	</node>
+
+
+	<node pkg="twist_mux" type="twist_mux" name="roomba_twist_mux">
+		<remap from="twist" to="/cmd_vel_mux/input/teleop"/>
+-->
+
+</launch>

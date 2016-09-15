@@ -147,7 +147,7 @@ void callback_ardrone(const geometry_msgs::TransformStamped& vic_ardrone)
     ROS_INFO("In callback ardrone");
     ardrone_pos = vic_ardrone.transform.translation;
 
-
+// Reproduce what we had above - update the pid messages and then publish them, as in the roomba callback
     posxdiff = ardrone_pos.x - roomba_pos.x;
     posydiff = ardrone_pos.y - roomba_pos.y;
     poszdiff = ardrone_pos.z - roomba_pos.z;
@@ -158,6 +158,4 @@ void callback_ardrone(const geometry_msgs::TransformStamped& vic_ardrone)
     pid_xpub.publish(topid_x);
     pid_ypub.publish(topid_y);
     pid_zpub.publish(topid_z);
-
-    
 }
