@@ -14,23 +14,17 @@
 // Define global variables because we can't have the callbacks return any values
 geometry_msgs::Vector3 roomba_pos1, roomba_pos2, roomba_vel1, roomba_vel2, roomba_acc1;
 geometry_msgs::Vector3 roomba_pos, ardrone_pos, roomba_vel, roomba_acc;
-double posxdiff, posydiff, poszdiff, velxdiff, accxdiff;
-std_msgs::Float64 topid_x, topid_y, topid_z, topid_yaw;
+std_msgs::Float64 posxdiff, posydiff, poszdiff, velxdiff, accxdiff;
 ros::Time roomba_time, ardrone_time;
 ros::Duration roomba_diff, roomba_diff2, ardrone_diff;
 
 // Create publishers to output position, velocity, and acceleration
-ros::Publisher pid_xpub;
-ros::Publisher pid_ypub;
-ros::Publisher pid_zpub;
-ros::Publisher pid_yawpub;
-
-/*ros::Publisher posxpub;
+ros::Publisher posxpub;
 ros::Publisher posypub;
 ros::Publisher poszpub;
 ros::Publisher velxpub;
 ros::Publisher accxpub;
-*/
+
 /*
 ros::Publisher velypub;
 ros::Publisher accypub;
@@ -60,20 +54,13 @@ int main(int argc, char **argv)
  
 
 
-    pid_xpub = n.advertise<std_msgs::Float64>("vicon_x",1000);
-    pid_ypub = n.advertise<std_msgs::Float64>("vicon_y",1000);
-    pid_zpub = n.advertise<std_msgs::Float64>("vicon_z",1000);
-    pid_yawpub = n.advertise<std_msgs::Float64>("vicon_yaw",1000);
-
-
-/*
     posxpub = n.advertise<std_msgs::Float64>("posx_diff",1000);
     velxpub = n.advertise<std_msgs::Float64>("velx_diff",1000);
     accxpub = n.advertise<std_msgs::Float64>("accx_diff",1000);
     posypub = n.advertise<std_msgs::Float64>("posy_diff",1000);
     poszpub = n.advertise<std_msgs::Float64>("posz_diff",1000);
     ROS_INFO("I before callback");
-*/
+
     subroomba = n.subscribe(VICON_ROOMBA, 1000, callback_roomba);
     subardrone = n.subscribe(VICON_ARDRONE, 1000, callback_ardrone);
     
@@ -112,24 +99,11 @@ void callback_roomba(const geometry_msgs::TransformStamped& vic_roomba)
    roomba_diff2 = roomba_diff;
    roomba_vel2 = roomba_vel1;
 
-   posxdiff = ardrone_pos.x - roomba_pos.x;
-   posydiff = ardrone_pos.y - roomba_pos.y;
-   poszdiff = ardrone_pos.z - roomba_pos.z;
-   velxdiff = roomba_vel1.x;
-   accxdiff = roomba_acc1.x;
-
-    //Implement the three separate control designs - in x take advantage of additional information about the target motion
-    //in y take only the position difference with saturation function. In z, simple position difference.
-    topid_x.data = 0.5*accxdiff + velxdiff + posxdiff/(1 + abs(posxdiff));
-    topid_y.data = posydiff/(1 + abs(posydiff));
-    topid_z.data = poszdiff;
-
-    pid_xpub.publish(topid_x);
-    pid_ypub.publish(topid_y);
-    pid_zpub.publish(topid_z);
-
-
-/*
+   posxdiff.data = ardrone_pos.x - roomba_pos.x;
+   posydiff.data = ardrone_pos.y - roomba_pos.y;
+   poszdiff.data = ardrone_pos.z - roomba_pos.z;
+   velxdiff.data = roomba_vel1.x;
+   accxdiff.data = roomba_acc1.x;
    //Publish position difference between ArDrone and Roomba
    //And the velocity and acceleration of the roomba.
 
@@ -138,7 +112,7 @@ void callback_roomba(const geometry_msgs::TransformStamped& vic_roomba)
    posypub.publish(posydiff);
    velxpub.publish(velxdiff);
    accxpub.publish(accxdiff);
-*/
+
    } 
 
 
@@ -146,18 +120,10 @@ void callback_ardrone(const geometry_msgs::TransformStamped& vic_ardrone)
 {
     ROS_INFO("In callback ardrone");
     ardrone_pos = vic_ardrone.transform.translation;
-
-
-    posxdiff = ardrone_pos.x - roomba_pos.x;
-    posydiff = ardrone_pos.y - roomba_pos.y;
-    poszdiff = ardrone_pos.z - roomba_pos.z;
-    topid_x.data = 0.5*accxdiff + velxdiff + posxdiff/(1 + abs(posxdiff));
-    topid_y.data = posydiff/(1 + abs(posydiff));
-    topid_z.data = poszdiff;
-
-    pid_xpub.publish(topid_x);
-    pid_ypub.publish(topid_y);
-    pid_zpub.publish(topid_z);
-
-    
+    posxdiff.data = ardrone_pos.x - roomba_pos.x;
+    posydiff.data = ardrone_pos.y - roomba_pos.y;
+    poszdiff.data = ardrone_pos.z - roomba_pos.z;
+    posxpub.publish(posxdiff);
+    posypub.publish(posydiff);
+    poszpub.publish(poszdiff);
 }
