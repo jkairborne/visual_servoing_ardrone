@@ -3,7 +3,9 @@
 #include <sstream>
 #include "geometry_msgs/TransformStamped.h"
 #include "geometry_msgs/Vector3.h"
+#include "geometry_msgs/Quaternion.h"
 #include "std_msgs/Float64.h"
+#include "tf/transform_datatypes.h"
 
 // Define constants to be the paths to receive vicon data
 #define VICON_ROOMBA "/chatter"
@@ -14,10 +16,11 @@
 // Define global variables because we can't have the callbacks return any values
 geometry_msgs::Vector3 roomba_pos1, roomba_pos2, roomba_vel1, roomba_vel2, roomba_acc1;
 geometry_msgs::Vector3 roomba_pos, ardrone_pos, roomba_vel, roomba_acc;
-double posxdiff, posydiff, poszdiff, velxdiff, accxdiff;
+double posxdiff, posydiff, poszdiff, velxdiff, accxdiff, ardroneyaw = 0.0;
 std_msgs::Float64 topid_x, topid_y, topid_z, topid_yaw;
 ros::Time roomba_time, ardrone_time;
 ros::Duration roomba_diff, roomba_diff2, ardrone_diff;
+tf::Quaternion ardronequat;
 
 // Create publishers to output position, velocity, and acceleration
 ros::Publisher pid_xpub;
@@ -109,6 +112,7 @@ void callback_roomba(const geometry_msgs::TransformStamped& vic_roomba)
    roomba_acc1.x = (roomba_vel1.x-roomba_vel2.x)/(roomba_diff.toSec()+roomba_diff2.toSec());
    roomba_acc1.y = (roomba_vel1.y-roomba_vel2.y)/(roomba_diff.toSec()+roomba_diff2.toSec());
    roomba_acc1.z = (roomba_vel1.z-roomba_vel2.z)/(roomba_diff.toSec()+roomba_diff2.toSec());
+   // Reset the roomba_diff and the roomba velocity for use for the next calculation
    roomba_diff2 = roomba_diff;
    roomba_vel2 = roomba_vel1;
 
@@ -147,6 +151,12 @@ void callback_ardrone(const geometry_msgs::TransformStamped& vic_ardrone)
     ROS_INFO("In callback ardrone");
     ardrone_pos = vic_ardrone.transform.translation;
 
+    // the incoming geometry_msgs::Quaternion is transformed to a tf::Quaterion
+    tf::quaternionMsgToTF(vic_ardrone.transform.rotation, ardronequat);
+
+    // the tf::Quaternion has a method to acess roll pitch and yaw
+    double roll, pitch;
+    tf::Matrix3x3(ardronequat).getRPY(roll, pitch, ardroneyaw);
 
     posxdiff = ardrone_pos.x - roomba_pos.x;
     posydiff = ardrone_pos.y - roomba_pos.y;
@@ -158,6 +168,5 @@ void callback_ardrone(const geometry_msgs::TransformStamped& vic_ardrone)
     pid_xpub.publish(topid_x);
     pid_ypub.publish(topid_y);
     pid_zpub.publish(topid_z);
-
-    
 }
+
