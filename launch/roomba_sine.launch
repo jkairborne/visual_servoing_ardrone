@@ -1,0 +1,9 @@
+<launch>
+    <include file="$(find vrpn_client_ros)/launch/sample.launch"/>
+	<node name="roomba_vel" pkg="visual_servoing_ardrone" type="roomba_vel"/>
+
+<!-- Need to include the turtlebot_bringup minimal.launch file -->
+	<include file="$(find turtlebot_bringup)/launch/minimal.launch"/> 
+
+
+</launch>
