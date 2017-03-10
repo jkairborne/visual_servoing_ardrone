@@ -158,6 +158,7 @@ void callback_ardrone(const geometry_msgs::TransformStamped& vic_ardrone)
     double roll, pitch;
     tf::Matrix3x3(ardronequat).getRPY(roll, pitch, ardroneyaw);
 
+// Reproduce what we had above - update the pid messages and then publish them, as in the roomba callback
     posxdiff = ardrone_pos.x - roomba_pos.x;
     posydiff = ardrone_pos.y - roomba_pos.y;
     poszdiff = ardrone_pos.z - roomba_pos.z;
