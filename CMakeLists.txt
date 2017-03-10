@@ -55,8 +55,8 @@
     target_link_libraries(PoseStamped_split ${catkin_LIBRARIES})
     add_executable(testing src/testing.cpp)
     target_link_libraries(testing ${catkin_LIBRARIES})
-    add_executable(vrpn_rebroadcast src/vrpn_rebroadcast.cpp)
-    target_link_libraries(vrpn_rebroadcast ${catkin_LIBRARIES})
+    add_executable(simpletest src/simpletest.cpp)
+    target_link_libraries(simpletest ${catkin_LIBRARIES})
 
     #add_executable(listen_to_rpy src/listen_to_rpy.cpp)
     #add_executable(setpoints src/setpoints.cpp)

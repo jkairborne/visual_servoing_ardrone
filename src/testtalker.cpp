@@ -12,7 +12,7 @@ int main(int argc, char **argv)
   ros::NodeHandle n;
 
 
-  ros::Publisher chatter_pub = n.advertise<geometry_msgs::TransformStamped>("chatter", 1000);
+  ros::Publisher chatter_pub = n.advertise<geometry_msgs::TransformStamped>("chatter1", 1000);
   ros::Publisher chatter_pub2 = n.advertise<geometry_msgs::TransformStamped>("chatter2", 1000);
 
   ros::Rate loop_rate(10);

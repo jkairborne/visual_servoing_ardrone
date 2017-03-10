@@ -1,29 +1,33 @@
-#include <iostream>
 
+#include <iostream>
+#include <string>
 #include <ros/ros.h>
+#include "geometry_msgs/PoseStamped.h"
+#include <vector>
+
 #include "geometry_msgs/TransformStamped.h"
 
 class SubscribeAndPublish
 {
-    char msg2[40];
+    std::string msg2;
 public:
-  SubscribeAndPublish(char *msg)//const std::string& msg)
+  SubscribeAndPublish(const std::string& msg)
   {
     //Topic you want to publish
-    pub_ = n_.advertise<geometry_msgs::TransformStamped>("/published_topic", 1);
-    strcpy(msg2,msg);
+    pub_ = n_.advertise<geometry_msgs::TransformStamped>(("/rebroadcast/"+msg), 1);
+    msg2 = msg;
     //Topic you want to subscribe
-    sub_ = n_.subscribe("/chatter", 1, &SubscribeAndPublish::callback, this);
+    ROS_INFO("Creating SubPub object for: %s",msg.c_str());
+    sub_ = n_.subscribe(msg, 1, &SubscribeAndPublish::callback, this);
   }
 
-  void callback(const geometry_msgs::TransformStamped& input)
+  void callback(const geometry_msgs::TransformStamped& input)//const geometry_msgs::PoseStamped& input)
   {
     geometry_msgs::TransformStamped output;
-    output.transform.translation.x = input.transform.translation.x-1;
-    output.header.seq = input.header.seq;
+    output = input;
     //.... do something with the input and generate the output...
     pub_.publish(output);
-    ROS_INFO("we are here %s",msg2);
+    ROS_INFO("we are here %s",msg2.c_str());
   }
 
 private:
@@ -38,8 +42,28 @@ int main(int argc, char **argv)
   //Initiate ROS
   ros::init(argc, argv, "subscribe_and_publish");
 
+
+  int i=0;
+  // Here we need to create a vector of SubPubs, so that we can create many objects
+  std::vector<SubscribeAndPublish> SubPubVector;
+
+  /*
+for(i=0;i<4;++i){
+  SubscribeAndPublish SAPObject("/chatter"+i);
+}//end for
+*/
+
   //Create an object of class SubscribeAndPublish that will take care of everything
-  SubscribeAndPublish SAPObject("testingishere");
+  SubscribeAndPublish SAPObject2("/chatter2");
+
+  SubscribeAndPublish SAPObject("/chatter1");
+
+  SubPubVector.push_back(SAPObject2);
+  SubPubVector.push_back(SAPObject);
+
+  // Will I need a while ros::ok() loop?
+
+
 
   ros::spin();
 
