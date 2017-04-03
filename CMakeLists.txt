@@ -27,13 +27,11 @@
 
     include_directories(include ${catkin_INCLUDE_DIRS})
 
-    add_executable(filter_empty_msgs src/filter_empty_msgs.cpp)
     add_executable(combine_floats src/combine_floats.cpp)
     add_executable(zerotwist src/zerotwist.cpp)
     add_executable(tag_detect src/tag_detect.cpp)
     add_executable(tag_detect2 src/tag_detect2.cpp)
     add_executable(setpoints_tag src/setpoints_tag.cpp)
-    target_link_libraries(filter_empty_msgs ${catkin_LIBRARIES})
     target_link_libraries(combine_floats ${catkin_LIBRARIES})
     target_link_libraries(zerotwist ${catkin_LIBRARIES})
     target_link_libraries(tag_detect ${catkin_LIBRARIES})

@@ -14,9 +14,9 @@
         <param name="flight_without_shell" value="0" />
         <param name="altitude_max" value="4000" />
         <param name="altitude_min" value="50" />
-        <param name="euler_angle_max" value="0.06" />
+        <param name="euler_angle_max" value="0.05" />
         <param name="control_vz_max" value="700" />
-        <param name="control_yaw" value="1.75" />
+        <param name="control_yaw" value="1.00" />
         <param name="detect_type" value="10" />
         <param name="enemy_colors" value="3" />
         <param name="detections_select_h" value="32" />

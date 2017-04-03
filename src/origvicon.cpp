@@ -25,13 +25,6 @@ ros::Publisher poszpub;
 ros::Publisher velxpub;
 ros::Publisher accxpub;
 
-/*
-ros::Publisher velypub;
-ros::Publisher accypub;
-ros::Publisher velzpub;
-ros::Publisher acczpub;
-*/
-
 //Prototype for the callback functions
 void callback_roomba(const geometry_msgs::TransformStamped& vic_roomba); 
 void callback_ardrone(const geometry_msgs::TransformStamped& vic_ardrone);
